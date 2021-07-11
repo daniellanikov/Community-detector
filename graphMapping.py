@@ -1,6 +1,5 @@
-import sys
-import networkx as nx
 import matplotlib.pyplot as plt
+from modularity import *
 
 
 class Edge:
@@ -24,7 +23,7 @@ def plot_edge_list(edges, filename):
     graph = nx.Graph()
     for edge in edges:
         graph.add_edge(edge.node1, edge.node2)
-    source = find_highest_degree(graph, 5)
+    source = find_highest_degree(graph, 10)
     colormap = [source.get(node, 0.78) for node in graph.nodes]
     nx.draw(graph, with_labels=True, node_color=colormap, cmap=plt.get_cmap("plasma"), vmin=0, vmax=1,
             font_color="white")
@@ -39,5 +38,29 @@ def find_highest_degree(graph=nx.Graph(), amount=1):
         colormap[sorted_nodes[i][0]] = 0.38
     return colormap
 
-edges = get_edge_list(sys.argv[1], ";")
-plot_edge_list(edges, sys.argv[2])
+
+def create_graph(edges):
+    graph = nx.Graph()
+    for edge in edges:
+        graph.add_edge(edge.node1, edge.node2)
+    return graph
+
+
+"""
+Greedy coloring strategies:
+
+largest_first
+random_sequential
+smallest_last
+connected_sequential_bfs
+connected_sequential_dfs
+"""
+
+
+def complement_coloring(graph=nx.Graph()):
+    complement = nx.complement(graph)
+    colored = nx.greedy_color(complement, strategy="connected_sequential_dfs")
+    colormap = [colored.get(node) for node in graph.nodes]
+    nx.draw(graph, with_labels=True, node_color=colormap, cmap=plt.get_cmap("plasma"), vmin=0, vmax=max(colormap),
+            font_color="white")
+    plt.show()
