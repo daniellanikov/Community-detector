@@ -17,7 +17,6 @@ def modularity(graph):
     for i in range(graph.number_of_nodes()):
         for j in range(graph.number_of_nodes()):
             temp = array[i][j] - ( graph.degree[nodes[i]] * graph.degree[nodes[j]] / (2*m) )
-            #print(temp)
             result += temp
     normalize = result / 4 * m
     return normalize

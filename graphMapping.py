@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from modularity import *
+import networkx as nx
 
 
 class Edge:

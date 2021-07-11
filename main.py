@@ -4,9 +4,10 @@ from modularity import *
 
 
 def main():
-    edges = get_edge_list(sys.argv[1], " ")
+    delimiter = " "
+    edges = get_edge_list(sys.argv[1], delimiter)
     graph = create_graph(edges)
-    print("modularity: ", modularity(graph))
+    print("calculated modularity: ", modularity(graph))
     complement_coloring(graph)
 
 
