@@ -28,7 +28,7 @@ connected_sequential_dfs
 def greedy_coloring(graph=nx.Graph()):
     colored = nx.greedy_color(graph, strategy="connected_sequential_dfs")
     colormap = [colored.get(node) for node in graph.nodes]
-    nx.draw(graph, with_labels=False, node_color=colormap, cmap=plt.get_cmap("plasma"), vmin=0, vmax=max(colormap),
+    nx.draw(graph, with_labels=False, node_color=colormap, node_size=50, cmap=plt.get_cmap("plasma"), vmin=0, vmax=max(colormap),
             font_color="white")
 
 
@@ -36,7 +36,7 @@ def complement_greedy_coloring(graph=nx.Graph()):
     complement = nx.complement(graph)
     colored = nx.greedy_color(complement, strategy="connected_sequential_dfs")
     colormap = [colored.get(node) for node in graph.nodes]
-    nx.draw(complement, with_labels=False, node_color=colormap, cmap=plt.get_cmap("plasma"), vmin=0, vmax=max(colormap),
+    nx.draw(complement, with_labels=False, node_size=50, node_color=colormap, cmap=plt.get_cmap("plasma"), vmin=0, vmax=max(colormap),
             font_color="white")
 
 
@@ -56,7 +56,7 @@ def binary_coloring(graph=nx.Graph()):
     print(count)
     colormap2 = [colormap.get(node, 0.38) for node in graph.nodes]
     print(colormap2)
-    nx.draw(graph, with_labels=False, node_color=colormap2, cmap=plt.get_cmap("plasma"), vmin=0, vmax=1,
+    nx.draw(graph, with_labels=False, node_size=50, node_color=colormap2, cmap=plt.get_cmap("plasma"), vmin=0, vmax=1,
             font_color="white")
 
 
@@ -79,7 +79,7 @@ def newman(graph=nx.Graph()):
             if node in node_groups[i]:
                 color_map.append(colors[i])
     print(color_map)
-    nx.draw(graph, with_labels=False, node_color=color_map, cmap=plt.get_cmap("plasma"), vmin=0, vmax=1,
+    nx.draw(graph, with_labels=False, node_size=50, node_color=color_map, cmap=plt.get_cmap("plasma"), vmin=0, vmax=1,
             font_color="white")
 
 
