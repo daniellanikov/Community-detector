@@ -1,16 +1,13 @@
 import sys
-import matplotlib.pyplot as plt
-
 from graphMapping import *
-from modularity import *
 from coloring import *
 
 
 def main():
-    delimiter = ";"
+    delimiter = " "
     edges = get_edge_list(sys.argv[1], delimiter)
     graph = create_graph(edges)
-    source_coloring(graph)
+    markov(graph)
     plt.show()
 
 
