@@ -2,6 +2,7 @@ import itertools
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
+from networkx import find_cliques, find_cliques_recursive
 from networkx.algorithms.community import girvan_newman
 import markov_clustering as mc
 from graphMapping import find_highest_degree
@@ -89,4 +90,21 @@ def markov(graph=nx.Graph()):
     clusters = mc.get_clusters(result)
     print(clusters)
     mc.draw_graph(matrix, clusters, node_size=50, with_labels=False, edge_color="silver")
+
+
+def community(graph=nx.Graph()):
+    result = list(find_cliques(graph))
+    cliques = []
+    for element in result:
+        if len(element) > 14:
+            cliques.append(element)
+
+    colormap = []
+    for element in graph.nodes:
+        if element in cliques[0]:
+            colormap.append(0.78)
+        else:
+            colormap.append(0.38)
+
+    nx.draw(graph, with_labels=False, node_size=50, node_color=colormap, cmap=plt.get_cmap("plasma"), vmin=0, vmax=1)
 
