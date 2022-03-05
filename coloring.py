@@ -6,6 +6,7 @@ from networkx.algorithms import find_cliques, graph_clique_number
 from networkx.algorithms.community import girvan_newman
 import markov_clustering as mc
 from graphMapping import find_highest_degree
+from Utils import colormap
 
 
 def source_coloring(graph=nx.Graph()):
@@ -61,23 +62,11 @@ def binary_coloring(graph=nx.Graph()):
             font_color="white")
 
 
-def girvan(graph=nx.Graph()):
-    posi_gn = nx.spring_layout(graph)
+def girvan(graph=nx.Graph(), comm_count=int):
     comp = nx.community.girvan_newman(graph)
-
-    k = 10  # number of communities
-    for _ in range(k - 1):
+    for _ in range(comm_count - 1):
         comms = next(comp)
-
-    cmap = plt.get_cmap("plasma")
-    colors = random.sample(range(0, 100), k)
-    for i in range(len(colors)):
-        colors[i] = colors[i] / 100
-
-    for nodes, c in zip(comms, colors):
-        color = [cmap(c)]*len(nodes)
-        nx.draw_networkx_nodes(graph, posi_gn, nodelist=nodes, node_color=color)
-    nx.draw_networkx_edges(graph, posi_gn)
+    colormap(graph, comms)
 
 
 def newman(graph=nx.Graph()):
@@ -112,32 +101,12 @@ def markov(graph=nx.Graph()):
 
 
 def community(graph=nx.Graph(), clique_size=int):
-    number = graph_clique_number(graph)
-    print(number)
-    cliques = find_cliques(graph)
-    for clique in cliques:
-        print(clique)
     result = list(find_cliques(graph))
-    print(result)
-    print(len(result))
     cliques = []
     for index in range(len(result) - 1):
         element = result[index]
         nextelement = result[index+1]
         if element[0] != nextelement[0] and len(element) > clique_size:
             cliques.append(element)
-
-    print(len(cliques))
-    print(cliques)
-
-    colormap = []
-    for element in graph.nodes:
-        for index in range(len(cliques)):
-            color = random.randint(0, 100) / 100
-            if element in cliques[index]:
-                colormap.append(color)
-        else:
-            colormap.append(0.38)
-
-    nx.draw(graph, with_labels=False, node_size=50, node_color=colormap, cmap=plt.get_cmap("plasma"), vmin=0, vmax=1)
+    colormap(graph, cliques)
 
