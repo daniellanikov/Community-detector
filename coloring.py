@@ -2,7 +2,7 @@ import itertools
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
-from networkx import find_cliques, find_cliques_recursive
+from networkx.algorithms import find_cliques, graph_clique_number
 from networkx.algorithms.community import girvan_newman
 import markov_clustering as mc
 from graphMapping import find_highest_degree
@@ -61,12 +61,31 @@ def binary_coloring(graph=nx.Graph()):
             font_color="white")
 
 
+def girvan(graph=nx.Graph()):
+    posi_gn = nx.spring_layout(graph)
+    comp = nx.community.girvan_newman(graph)
+
+    k = 10  # number of communities
+    for _ in range(k - 1):
+        comms = next(comp)
+
+    cmap = plt.get_cmap("plasma")
+    colors = random.sample(range(0, 100), k)
+    for i in range(len(colors)):
+        colors[i] = colors[i] / 100
+
+    for nodes, c in zip(comms, colors):
+        color = [cmap(c)]*len(nodes)
+        nx.draw_networkx_nodes(graph, posi_gn, nodelist=nodes, node_color=color)
+    nx.draw_networkx_edges(graph, posi_gn)
+
+
 def newman(graph=nx.Graph()):
     result = girvan_newman(graph)
     limited = itertools.takewhile(lambda c: len(c) <= 100, result)
 
     node_groups = []
-    for communities in next(limited):
+    for communities in next(result):
         node_groups.append(list(communities))
     print(len(node_groups))
 
@@ -92,17 +111,31 @@ def markov(graph=nx.Graph()):
     mc.draw_graph(matrix, clusters, node_size=50, with_labels=False, edge_color="silver")
 
 
-def community(graph=nx.Graph()):
+def community(graph=nx.Graph(), clique_size=int):
+    number = graph_clique_number(graph)
+    print(number)
+    cliques = find_cliques(graph)
+    for clique in cliques:
+        print(clique)
     result = list(find_cliques(graph))
+    print(result)
+    print(len(result))
     cliques = []
-    for element in result:
-        if len(element) > 14:
+    for index in range(len(result) - 1):
+        element = result[index]
+        nextelement = result[index+1]
+        if element[0] != nextelement[0] and len(element) > clique_size:
             cliques.append(element)
+
+    print(len(cliques))
+    print(cliques)
 
     colormap = []
     for element in graph.nodes:
-        if element in cliques[0]:
-            colormap.append(0.78)
+        for index in range(len(cliques)):
+            color = random.randint(0, 100) / 100
+            if element in cliques[index]:
+                colormap.append(color)
         else:
             colormap.append(0.38)
 
