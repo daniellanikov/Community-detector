@@ -2,7 +2,7 @@ import itertools
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
-from networkx.algorithms import find_cliques, graph_clique_number
+from networkx.algorithms import find_cliques
 from networkx.algorithms.community import girvan_newman
 import markov_clustering as mc
 from graphMapping import find_highest_degree
