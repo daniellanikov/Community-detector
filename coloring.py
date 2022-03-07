@@ -3,7 +3,7 @@ import random
 import networkx as nx
 import matplotlib.pyplot as plt
 from networkx.algorithms import find_cliques
-from networkx.algorithms.community import girvan_newman
+from networkx.algorithms.community import girvan_newman, greedy_modularity_communities
 import markov_clustering as mc
 from graphMapping import find_highest_degree
 from Utils import colormap
@@ -109,4 +109,9 @@ def community(graph=nx.Graph(), clique_size=int):
         if element[0] != nextelement[0] and len(element) > clique_size:
             cliques.append(element)
     colormap(graph, cliques)
+
+
+def greedy_modularity(graph=nx.Graph()):
+    result = list(greedy_modularity_communities(graph))
+    colormap(graph, result)
 
