@@ -67,40 +67,30 @@ def girvan(graph=nx.Graph(), comm_count=int):
     for _ in range(comm_count - 1):
         comms = next(comp)
     colormap(graph, comms)
+    return comms
 
 
 def newman(graph=nx.Graph()):
     result = girvan_newman(graph)
     limited = itertools.takewhile(lambda c: len(c) <= 100, result)
-
-    node_groups = []
-    for communities in next(result):
-        node_groups.append(list(communities))
-    print(len(node_groups))
-
-    colors = random.sample(range(0, 100), len(node_groups))
-    for i in range(len(colors)):
-        colors[i] = colors[i] / 100
-
-    color_map = []
-    for i in range(len(node_groups)):
-        for node in graph:
-            if node in node_groups[i]:
-                color_map.append(colors[i])
-    print(color_map)
-    nx.draw(graph, with_labels=False, node_size=50, node_color=color_map, cmap=plt.get_cmap("plasma"), vmin=0, vmax=1,
-            font_color="white")
+    for communities in limited:
+        node_groups = communities
+    colormap(graph, node_groups)
+    return node_groups
 
 
 def markov(graph=nx.Graph()):
     matrix = nx.to_scipy_sparse_matrix(graph)
     result = mc.run_mcl(matrix)
     clusters = mc.get_clusters(result)
-    print(clusters)
+    node_groups = []
+    for cluster in clusters:
+        node_groups.append(cluster)
+    print("modularity: ", mc.modularity(matrix, clusters))
     mc.draw_graph(matrix, clusters, node_size=50, with_labels=False, edge_color="silver")
 
 
-def community(graph=nx.Graph(), clique_size=int):
+def clique(graph=nx.Graph(), clique_size=int):
     result = list(find_cliques(graph))
     cliques = []
     for index in range(len(result) - 1):
@@ -114,4 +104,5 @@ def community(graph=nx.Graph(), clique_size=int):
 def greedy_modularity(graph=nx.Graph()):
     result = list(greedy_modularity_communities(graph))
     colormap(graph, result)
+    return result
 
