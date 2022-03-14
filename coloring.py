@@ -6,7 +6,7 @@ from networkx.algorithms import find_cliques
 from networkx.algorithms.community import girvan_newman, greedy_modularity_communities
 import markov_clustering as mc
 from graphMapping import find_highest_degree
-from Utils import colormap
+from utils import colormap
 
 
 def source_coloring(graph=nx.Graph()):
@@ -73,9 +73,10 @@ def girvan(graph=nx.Graph(), comm_count=int):
 def newman(graph=nx.Graph()):
     result = girvan_newman(graph)
     limited = itertools.takewhile(lambda c: len(c) <= 100, result)
-    for communities in limited:
-        node_groups = communities
-    colormap(graph, node_groups)
+    node_groups = []
+    for communities in next(limited):
+        node_groups.append(list(communities))
+    #colormap(graph, node_groups)
     return node_groups
 
 

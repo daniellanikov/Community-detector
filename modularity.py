@@ -1,4 +1,6 @@
+import networkx as nx
 import networkx.algorithms.community as nx_comm
+from graphMapping import *
 
 
 def modularity(graph, node_groups):
@@ -19,3 +21,24 @@ def modularity(graph, node_groups):
     normalize = result / 4 * m
     print("calculated modularity: ", normalize)
     """
+
+
+def condense(graph=nx.Graph(), node_groups=list):
+    """
+    edges = graph.edges
+    digraph = nx.DiGraph()
+    digraph.add_edges_from(edges)
+    scc = list(nx.strongly_connected_components(digraph))
+    condensed_graph = nx.condensation(digraph, scc)
+    nx.draw(condensed_graph, with_labels=False, node_size=50, node_color='blue', edge_color='silver', vmin=0, vmax=1)
+    """
+    condensed_graph = nx.Graph()
+    for value in node_groups[0]:
+        for value2 in node_groups[1]:
+            edge = (value, value2)
+            if edge in graph.edges and edge not in condensed_graph.edges:
+                condensed_graph.add_edge(*edge)
+            break
+        break
+    nx.draw(condensed_graph, with_labels=True, node_size=50, node_color='blue', edge_color='silver', vmin=0, vmax=1)
+
