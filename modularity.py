@@ -33,12 +33,14 @@ def condense(graph=nx.Graph(), node_groups=list):
     nx.draw(condensed_graph, with_labels=False, node_size=50, node_color='blue', edge_color='silver', vmin=0, vmax=1)
     """
     condensed_graph = nx.Graph()
-    for value in node_groups[0]:
-        for value2 in node_groups[1]:
-            edge = (value, value2)
-            if edge in graph.edges and edge not in condensed_graph.edges:
-                condensed_graph.add_edge(*edge)
-            break
-        break
-    nx.draw(condensed_graph, with_labels=True, node_size=50, node_color='blue', edge_color='silver', vmin=0, vmax=1)
+    for index in range(len(node_groups)):
+        for index2 in range(len(node_groups)):
+            if index != index2:
+                for value in node_groups[index]:
+                    for value2 in node_groups[index2]:
+                        edge = (value, value2)
+                        if edge in graph.edges:
+                            if (index, index2) not in condensed_graph.edges:
+                                condensed_graph.add_edge(index, index2)
+    nx.draw(condensed_graph, with_labels=True, node_color='blue', edge_color='silver', vmin=0, vmax=1, font_color="white")
 
