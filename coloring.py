@@ -2,11 +2,13 @@ import itertools
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
-from networkx.algorithms import find_cliques
+from networkx import adjacency_matrix
+from networkx.algorithms import find_cliques, bipartite
 from networkx.algorithms.community import girvan_newman, greedy_modularity_communities
 import markov_clustering as mc
-from graphMapping import find_highest_degree
+from graphMapping import find_highest_degree, Cluster
 from utils import colormap
+from sympy import *
 
 
 def source_coloring(graph=nx.Graph()):
@@ -86,9 +88,11 @@ def markov(graph=nx.Graph()):
     clusters = mc.get_clusters(result)
     node_groups = []
     for cluster in clusters:
+        print(cluster)
         node_groups.append(cluster)
     print("modularity: ", mc.modularity(matrix, clusters))
     mc.draw_graph(matrix, clusters, node_size=50, with_labels=False, edge_color="silver")
+    return node_groups
 
 
 def clique(graph=nx.Graph(), clique_size=int):
@@ -104,6 +108,89 @@ def clique(graph=nx.Graph(), clique_size=int):
 
 def greedy_modularity(graph=nx.Graph()):
     result = list(greedy_modularity_communities(graph))
-    colormap(graph, result)
+    #colormap(graph, result)
     return result
 
+
+def adjacency(graph=nx.Graph()):
+    A = adjacency_matrix(graph)
+    m = Matrix(A.todense())
+    A_rref = m.rref()
+    print("The Row echelon form of matrix M and the pivot columns : {}".format(A_rref))
+
+
+def h_avoiding_coloring(graph=nx.Graph(), h=nx.Graph()):
+    X, Y = bipartite.sets(graph)
+    colordict = {}
+    clusters = []
+    uuids = []
+    for node in graph.nodes:
+        if node in Y:
+            if graph.degree(node) == 1:
+                colordict[node] = 0.72
+                if 1 not in uuids:
+                    uuids.append(1)
+                    clusters.append(Cluster(1, node))
+                else:
+                    for cluster in clusters:
+                        if 1 == cluster.uuid:
+                            cluster.add_node(node)
+
+            if graph.degree(node) == 2:
+                colordict[node] = 0.62
+                if 2 not in uuids:
+                    uuids.append(2)
+                    clusters.append(Cluster(2, node))
+                else:
+                    for cluster in clusters:
+                        if 2 == cluster.uuid:
+                            cluster.add_node(node)
+
+            if graph.degree(node) == 3:
+                colordict[node] = 0.52
+                if 3 not in uuids:
+                    uuids.append(3)
+                    clusters.append(Cluster(3, node))
+                else:
+                    for cluster in clusters:
+                        if 3 == cluster.uuid:
+                            cluster.add_node(node)
+        else:
+            colordict[node] = 0.32
+            if 10 not in uuids:
+                uuids.append(10)
+                clusters.append(Cluster(10, node))
+            else:
+                for cluster in clusters:
+                    if 10 == cluster.uuid:
+                        cluster.add_node(node)
+
+    for cluster in clusters:
+        if cluster.uuid == 10:
+            cluster_1 = cluster.get_nodes(10)
+        elif cluster.uuid == 3:
+            cluster_2 = cluster.get_nodes(3)
+
+    #2k2 detection
+    k2s = []
+    for node in cluster_1:
+        for item in cluster_2:
+            for edge in graph.edges(node):
+                if edge[1] == item:
+                    k2s.append(edge)
+    for k2 in k2s:
+        first = k2s[0]
+        if first[0] != k2[0] and first[1] != k2[1]:
+            colordict[k2[1]] = 0.42
+
+    #initialize graph position
+    pos = dict()
+    pos.update((n, (1, i)) for i, n in enumerate(X))
+    pos.update((n, (2, i)) for i, n in enumerate(Y))
+
+    #get colormap
+    colors = []
+    for node in graph.nodes:
+        colors.append(colordict.get(node))
+
+    nx.draw(graph, pos=pos, with_labels=True, node_color=colors, cmap=plt.get_cmap("plasma"), edge_color='silver', vmin=0, vmax=1, font_color="white")

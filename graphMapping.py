@@ -41,6 +41,9 @@ class Cluster:
     def add_node(self, node):
         self.nodes.append(node)
 
+    def get_nodes(self, uuid):
+        if self.uuid == uuid:
+            return self.nodes
 
 def get_cluster_list(filepath, delimiter):
     file = open(filepath, "r")

@@ -1,16 +1,17 @@
 import sys
+
+from networkx import number_connected_components
 from graphMapping import *
 from coloring import *
-from modularity import modularity
+from small_world import *
+from modularity import *
 
 
 def main():
     delimiter = " "
     edges = get_edge_list(sys.argv[1], delimiter)
     graph = create_graph(edges)
-    print("number of nodes: ", nx.number_of_nodes(graph))
-    node_groups = newman(graph)
-    modularity(graph, node_groups)
+    h_avoiding_coloring(graph)
     plt.show()
 
 

@@ -42,5 +42,5 @@ def condense(graph=nx.Graph(), node_groups=list):
                         if edge in graph.edges:
                             if (index, index2) not in condensed_graph.edges:
                                 condensed_graph.add_edge(index, index2)
-    nx.draw(condensed_graph, with_labels=True, node_color='blue', edge_color='silver', vmin=0, vmax=1, font_color="white")
-
+    #nx.draw(condensed_graph, with_labels=True, node_color='blue', edge_color='silver', vmin=0, vmax=1, font_color="white")
+    return condensed_graph

@@ -8,6 +8,7 @@ networkx = "*"
 matplotlib = "*"
 scipy = "*"
 markov-clustering = "*"
+sympy = "*"
 
 [dev-packages]
 
