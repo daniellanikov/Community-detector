@@ -119,9 +119,21 @@ def adjacency(graph=nx.Graph()):
     print("The Row echelon form of matrix M and the pivot columns : {}".format(A_rref))
 
 
+def y_sorter(graph=nx.Graph()):
+    X, Y = bipartite.sets(graph)
+    nodes = {}
+    degrees = []
+    for item in Y:
+        if graph.degree[item] not in nodes.values():
+            degrees.append(graph.degree[item])
+        nodes[item] = graph.degree[item]
+    ordered = dict(sorted(nodes.items(), key=lambda item: item[1]))
+    ordered_list = list(ordered)
+    return ordered_list
+
+
 def degree_coloring(graph=nx.Graph()):
     X, Y = bipartite.sets(graph)
-    print(Y)
     nodes = {}
     degrees = []
     for item in Y:
@@ -178,8 +190,8 @@ def h_avoiding_coloring(graph=nx.Graph(), h=nx.Graph()):
 
     #initialize graph position
     pos = dict()
-    pos.update((n, (1, i)) for i, n in enumerate(X))
-    pos.update((n, (2, i)) for i, n in enumerate(Y))
+    pos.update((n, (1, i)) for i, n in enumerate(cluster_1))
+    pos.update((n, (2, i)) for i, n in enumerate(y_sorter(graph)))
 
     #get colormap
     colors = []
