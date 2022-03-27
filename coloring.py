@@ -119,44 +119,38 @@ def adjacency(graph=nx.Graph()):
     print("The Row echelon form of matrix M and the pivot columns : {}".format(A_rref))
 
 
+def degree_coloring(graph=nx.Graph()):
+    X, Y = bipartite.sets(graph)
+    print(Y)
+    nodes = {}
+    degrees = []
+    for item in Y:
+        if graph.degree[item] not in nodes.values():
+            degrees.append(graph.degree[item])
+        nodes[item] = graph.degree[item]
+    return degrees
+
+
 def h_avoiding_coloring(graph=nx.Graph(), h=nx.Graph()):
     X, Y = bipartite.sets(graph)
+    degrees = degree_coloring(graph)
     colordict = {}
-    clusters = []
     uuids = []
+    clusters = []
     for node in graph.nodes:
         if node in Y:
-            if graph.degree(node) == 1:
-                colordict[node] = 0.72
-                if 1 not in uuids:
-                    uuids.append(1)
-                    clusters.append(Cluster(1, node))
-                else:
-                    for cluster in clusters:
-                        if 1 == cluster.uuid:
-                            cluster.add_node(node)
-
-            if graph.degree(node) == 2:
-                colordict[node] = 0.62
-                if 2 not in uuids:
-                    uuids.append(2)
-                    clusters.append(Cluster(2, node))
-                else:
-                    for cluster in clusters:
-                        if 2 == cluster.uuid:
-                            cluster.add_node(node)
-
-            if graph.degree(node) == 3:
-                colordict[node] = 0.52
-                if 3 not in uuids:
-                    uuids.append(3)
-                    clusters.append(Cluster(3, node))
-                else:
-                    for cluster in clusters:
-                        if 3 == cluster.uuid:
-                            cluster.add_node(node)
+            for degree in degrees:
+                if graph.degree(node) == degree:
+                    colordict[node] = degree / 10 * 1.5
+                    if degree not in uuids:
+                        uuids.append(degree)
+                        clusters.append(Cluster(degree, node))
+                    else:
+                        for cluster in clusters:
+                            if degree == cluster.uuid:
+                                cluster.add_node(node)
         else:
-            colordict[node] = 0.32
+            colordict[node] = 0.82
             if 10 not in uuids:
                 uuids.append(10)
                 clusters.append(Cluster(10, node))
@@ -168,20 +162,19 @@ def h_avoiding_coloring(graph=nx.Graph(), h=nx.Graph()):
     for cluster in clusters:
         if cluster.uuid == 10:
             cluster_1 = cluster.get_nodes(10)
-        elif cluster.uuid == 3:
-            cluster_2 = cluster.get_nodes(3)
 
     #2k2 detection
     k2s = []
     for node in cluster_1:
-        for item in cluster_2:
-            for edge in graph.edges(node):
-                if edge[1] == item:
-                    k2s.append(edge)
+        for cluster in clusters:
+            for item in cluster.nodes:
+                for edge in graph.edges(node):
+                    if edge[1] == item:
+                        k2s.append(edge)
     for k2 in k2s:
         first = k2s[0]
         if first[0] != k2[0] and first[1] != k2[1]:
-            colordict[k2[1]] = 0.42
+            colordict[k2[1]] = random.randint(1, 100) / 100
 
     #initialize graph position
     pos = dict()
@@ -192,5 +185,5 @@ def h_avoiding_coloring(graph=nx.Graph(), h=nx.Graph()):
     colors = []
     for node in graph.nodes:
         colors.append(colordict.get(node))
-
+    print(colordict)
     nx.draw(graph, pos=pos, with_labels=True, node_color=colors, cmap=plt.get_cmap("plasma"), edge_color='silver', vmin=0, vmax=1, font_color="white")
