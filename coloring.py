@@ -74,11 +74,11 @@ def girvan(graph=nx.Graph(), comm_count=int):
 
 def newman(graph=nx.Graph()):
     result = girvan_newman(graph)
-    limited = itertools.takewhile(lambda c: len(c) <= 100, result)
+    limited = itertools.takewhile(lambda c: len(c) <= 2000, result)
     node_groups = []
     for communities in next(limited):
         node_groups.append(list(communities))
-    #colormap(graph, node_groups)
+    colormap(graph, node_groups)
     return node_groups
 
 
@@ -90,7 +90,7 @@ def markov(graph=nx.Graph()):
     for cluster in clusters:
         print(cluster)
         node_groups.append(cluster)
-    print("modularity: ", mc.modularity(matrix, clusters))
+    print("mc modularity: ", mc.modularity(matrix, clusters))
     mc.draw_graph(matrix, clusters, node_size=50, with_labels=False, edge_color="silver")
     return node_groups
 
