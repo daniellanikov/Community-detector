@@ -68,7 +68,6 @@ def girvan(graph=nx.Graph(), comm_count=int):
     comp = nx.community.girvan_newman(graph)
     for _ in range(comm_count - 1):
         comms = next(comp)
-    colormap(graph, comms)
     return comms
 
 

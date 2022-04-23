@@ -7,6 +7,7 @@ def modularity(graph, node_groups):
     # Built in networkx modularity
     value = nx_comm.modularity(graph, node_groups)
     print("networkx modularity: ", value)
+    return value
 
     # Calculated modularity
     """

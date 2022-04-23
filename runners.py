@@ -18,10 +18,13 @@ def sixtep_modularity(graph, delimiter, cluster_path):
 
 
 def ng_finetune_with_modularity(graph, begin, end):
+    modularities = []
     for i in range(begin, end):
         node_list = girvan(graph, i)
         print("color number: ", i)
-        modularity(graph, node_list)
+        modularities.append(modularity(graph, node_list))
+    value = max(modularities)
+    return modularities.index(value)
 
 
 def measure(graph):
@@ -35,4 +38,12 @@ def measure(graph):
     print("finetune: ")
     ng_finetune_with_modularity(graph, 5, 25)
 
+
+def communities(graph):
+    largest_connected_component = graph.subgraph(max(nx.connected_components(graph), key=len))
+    groups = greedy_modularity(largest_connected_component)
+    print("number of groups: ", len(groups))
+    value = ng_finetune_with_modularity(largest_connected_component, len(groups)-5, len(groups)+5)
+    ng_groups = girvan(largest_connected_component, value)
+    colormap(largest_connected_component, ng_groups)
 
