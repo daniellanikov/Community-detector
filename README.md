@@ -1,2 +1,2 @@
 # Community-detector
-Community detection in smallworld graphs.
+This is a prototype console application to detect social networks and clustering transactional type of the graphs. The app uses NetworkX algorithms to run against the given databases, such as Girvan-Newman, Markov chain and others are implemented to cluster transaction-like patterns. The application is able to map a graph (also known as network) with any given delimiter, in any text format furthermore there is an option to connect to database if necessary. The results of the algorithms are plotted and displayed after the run. The coloring logic has been implemented in a fairly naive and greedy colormap.
