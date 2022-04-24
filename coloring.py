@@ -87,10 +87,9 @@ def markov(graph=nx.Graph()):
     clusters = mc.get_clusters(result)
     node_groups = []
     for cluster in clusters:
-        print(cluster)
         node_groups.append(cluster)
-    print("mc modularity: ", mc.modularity(matrix, clusters))
-    mc.draw_graph(matrix, clusters, node_size=50, with_labels=False, edge_color="silver")
+    #print("mc modularity: ", mc.modularity(matrix, clusters))
+    #mc.draw_graph(matrix, clusters, node_size=50, with_labels=False, edge_color="silver")
     return node_groups
 
 

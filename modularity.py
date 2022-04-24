@@ -1,6 +1,7 @@
 import networkx as nx
 import networkx.algorithms.community as nx_comm
 from graphMapping import *
+import numpy as np
 
 
 def modularity(graph, node_groups):
@@ -9,8 +10,8 @@ def modularity(graph, node_groups):
     print("networkx modularity: ", value)
     return value
 
-    # Calculated modularity
-    """
+
+def calculated_modularity(graph):
     array = np.array(nx.adjacency_matrix(graph).todense())
     m = graph.number_of_edges()
     result = 0
@@ -21,27 +22,27 @@ def modularity(graph, node_groups):
             result += temp
     normalize = result / 4 * m
     print("calculated modularity: ", normalize)
-    """
 
 
-def condense(graph=nx.Graph(), node_groups=list):
-    """
+def condense_built_in(graph):
     edges = graph.edges
     digraph = nx.DiGraph()
     digraph.add_edges_from(edges)
     scc = list(nx.strongly_connected_components(digraph))
     condensed_graph = nx.condensation(digraph, scc)
     nx.draw(condensed_graph, with_labels=False, node_size=50, node_color='blue', edge_color='silver', vmin=0, vmax=1)
-    """
+
+
+def condense(graph=nx.Graph(), node_groups=list, class_size=int):
     condensed_graph = nx.Graph()
     for index in range(len(node_groups)):
         for index2 in range(len(node_groups)):
-            if index != index2:
-                for value in node_groups[index]:
-                    for value2 in node_groups[index2]:
-                        edge = (value, value2)
-                        if edge in graph.edges:
-                            if (index, index2) not in condensed_graph.edges:
-                                condensed_graph.add_edge(index, index2)
-    #nx.draw(condensed_graph, with_labels=True, node_color='blue', edge_color='silver', vmin=0, vmax=1, font_color="white")
+            if len(node_groups[index]) > class_size and len(node_groups[index2]) > class_size:
+                if index != index2:
+                    for value in node_groups[index]:
+                        for value2 in node_groups[index2]:
+                            edge = (value, value2)
+                            if edge in graph.edges:
+                                if (index, index2) not in condensed_graph.edges:
+                                    condensed_graph.add_edge(index, index2)
     return condensed_graph
