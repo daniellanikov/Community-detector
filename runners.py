@@ -56,3 +56,9 @@ def cluster_and_condense(graph, class_size):
     nx.draw(condensed_graph, with_labels=True, node_color='blue', edge_color='silver', vmin=0, vmax=1,
             font_color="white")
 
+
+def edges_between_clusters(graph):
+    largest_connected_component = graph.subgraph(max(nx.connected_components(graph), key=len))
+    groups = greedy_modularity(largest_connected_component)
+    edgenumber(nodegroups2cluster(groups), largest_connected_component)
+

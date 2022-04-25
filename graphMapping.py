@@ -38,6 +38,10 @@ class Cluster:
         self.uuid = uuid
         self.nodes = [node]
 
+    def __init__(self, uuid, nodelist):
+        self.uuid = uuid
+        self.nodes = nodelist
+
     def add_node(self, node):
         self.nodes.append(node)
 

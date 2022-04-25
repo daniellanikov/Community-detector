@@ -46,3 +46,30 @@ def condense(graph=nx.Graph(), node_groups=list, class_size=int):
                                 if (index, index2) not in condensed_graph.edges:
                                     condensed_graph.add_edge(index, index2)
     return condensed_graph
+
+
+def nodegroups2cluster(node_groups=list):
+    clusters = []
+    for index in range(len(node_groups)):
+        clusters.append(Cluster(index, node_groups[index]))
+    return clusters
+
+
+def get_edges(group1=list, group2=list, graph=nx.Graph()):
+    edge_list = []
+    for value in group1:
+        for value2 in group2:
+            edge = (value, value2)
+            if edge in graph.edges:
+                if edge not in edge_list:
+                    edge_list.append(edge)
+    return edge_list
+
+
+def edgenumber(clusters=list, graph=nx.Graph()):
+    for cluster1 in clusters:
+        for cluster2 in clusters:
+            if cluster1.uuid != cluster2.uuid:
+                edgelist = get_edges(cluster1.nodes, cluster2.nodes, graph)
+                print("numbers of edges ", len(edgelist), "between cluster[", cluster1.uuid, "] and cluster[", cluster2.uuid, "]")
+
