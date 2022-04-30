@@ -66,10 +66,13 @@ def get_edges(group1=list, group2=list, graph=nx.Graph()):
     return edge_list
 
 
-def edgenumber(clusters=list, graph=nx.Graph()):
+def edgenumber(clusters=list, graph=nx.Graph(), output_filename=str):
+    f = open("./outputs/"+output_filename, "a")
     for cluster1 in clusters:
         for cluster2 in clusters:
             if cluster1.uuid != cluster2.uuid:
                 edgelist = get_edges(cluster1.nodes, cluster2.nodes, graph)
-                print("numbers of edges ", len(edgelist), "between cluster[", cluster1.uuid, "] and cluster[", cluster2.uuid, "]")
-
+                text = "numbers of edges " + str(len(edgelist)) + " between cluster[" + str(cluster1.uuid) + "] and cluster[" + str(cluster2.uuid) + "]\n"
+                f.write(text)
+                print(text)
+    f.close()

@@ -57,8 +57,8 @@ def cluster_and_condense(graph, class_size):
             font_color="white")
 
 
-def edges_between_clusters(graph):
+def edges_between_clusters(graph, output_filename):
     largest_connected_component = graph.subgraph(max(nx.connected_components(graph), key=len))
     groups = greedy_modularity(largest_connected_component)
-    edgenumber(nodegroups2cluster(groups), largest_connected_component)
+    edgenumber(nodegroups2cluster(groups), largest_connected_component, output_filename)
 
