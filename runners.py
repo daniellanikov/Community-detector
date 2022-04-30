@@ -48,10 +48,10 @@ def communities(graph):
     colormap(largest_connected_component, ng_groups)
 
 
-def cluster_and_condense(graph, class_size):
+def cluster_and_condense(graph, class_size, edge_number):
     largest_connected_component = graph.subgraph(max(nx.connected_components(graph), key=len))
     node_groups = greedy_modularity(largest_connected_component)
-    condensed_graph = condense(largest_connected_component, node_groups, class_size)
+    condensed_graph = condense(largest_connected_component, node_groups, class_size, edge_number)
     print("size of condensed graph: ", condensed_graph.number_of_nodes())
     nx.draw(condensed_graph, with_labels=True, node_color='blue', edge_color='silver', vmin=0, vmax=1,
             font_color="white")
