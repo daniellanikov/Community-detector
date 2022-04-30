@@ -14,3 +14,4 @@ def colormap(graph=nx.Graph(), cliques=list):
         color = [cmap(c)]*len(nodes)
         nx.draw_networkx_nodes(graph, posi_gn, nodelist=nodes, node_color=color, node_size=50)
     nx.draw_networkx_edges(graph, posi_gn, edge_color="silver")
+
