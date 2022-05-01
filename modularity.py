@@ -77,3 +77,4 @@ def edgenumber(clusters=list, graph=nx.Graph(), output_filename=str):
                 edgelist = get_edges(cluster1.nodes, cluster2.nodes, graph)
                 text = text + "numbers of edges " + str(len(edgelist)) + " between cluster[" + str(cluster1.uuid) + "] and cluster[" + str(cluster2.uuid) + "]\n"
     write2file(text, output_filename)
+

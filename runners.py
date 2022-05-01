@@ -48,7 +48,7 @@ def communities(graph):
     colormapper(largest_connected_component, ng_groups)
 
 
-def cluster_and_condense(graph, class_size, edge_number):
+def detect_and_condense(graph, class_size, edge_number):
     largest_connected_component = graph.subgraph(max(nx.connected_components(graph), key=len))
     node_groups = greedy_modularity(largest_connected_component)
     condensed_graph = condense(largest_connected_component, node_groups, class_size, edge_number)
