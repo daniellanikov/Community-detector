@@ -45,7 +45,7 @@ def communities(graph):
     print("number of groups: ", len(groups))
     value = ng_finetune_with_modularity(largest_connected_component, len(groups)-5, len(groups)+5)
     ng_groups = girvan(largest_connected_component, value)
-    colormap(largest_connected_component, ng_groups)
+    colormapper(largest_connected_component, ng_groups)
 
 
 def cluster_and_condense(graph, class_size, edge_number):

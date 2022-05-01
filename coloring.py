@@ -7,7 +7,7 @@ from networkx.algorithms import find_cliques, bipartite
 from networkx.algorithms.community import girvan_newman, greedy_modularity_communities
 import markov_clustering as mc
 from graphMapping import find_highest_degree, Cluster
-from utils import colormap
+from utils import colormapper
 from sympy import *
 
 
@@ -77,7 +77,7 @@ def newman(graph=nx.Graph()):
     node_groups = []
     for communities in next(limited):
         node_groups.append(list(communities))
-    colormap(graph, node_groups)
+    colormapper(graph, node_groups)
     return node_groups
 
 
@@ -101,7 +101,7 @@ def clique(graph=nx.Graph(), clique_size=int):
         nextelement = result[index+1]
         if element[0] != nextelement[0] and len(element) > clique_size:
             cliques.append(element)
-    colormap(graph, cliques)
+    colormapper(graph, cliques)
 
 
 def greedy_modularity(graph=nx.Graph()):

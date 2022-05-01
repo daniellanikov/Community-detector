@@ -3,7 +3,7 @@ import random
 import networkx as nx
 
 
-def colormap(graph=nx.Graph(), cliques=list):
+def colormapper(graph=nx.Graph(), cliques=list):
     posi_gn = nx.spring_layout(graph)
     cmap = plt.get_cmap("plasma")
     colors = random.sample(range(0, len(cliques)), len(cliques))
@@ -15,3 +15,9 @@ def colormap(graph=nx.Graph(), cliques=list):
         nx.draw_networkx_nodes(graph, posi_gn, nodelist=nodes, node_color=color, node_size=50)
     nx.draw_networkx_edges(graph, posi_gn, edge_color="silver")
 
+
+def write2file(text, outputfile):
+    f = open("./outputs/" + outputfile, "a")
+    f.write(text)
+    print(text)
+    f.close()

@@ -2,6 +2,7 @@ import networkx as nx
 import networkx.algorithms.community as nx_comm
 from graphMapping import *
 import numpy as np
+from utils import write2file
 
 
 def modularity(graph, node_groups):
@@ -69,12 +70,10 @@ def get_edges(group1=list, group2=list, graph=nx.Graph()):
 
 
 def edgenumber(clusters=list, graph=nx.Graph(), output_filename=str):
-    f = open("./outputs/"+output_filename, "a")
+    text = ""
     for cluster1 in clusters:
         for cluster2 in clusters:
             if cluster1.uuid != cluster2.uuid:
                 edgelist = get_edges(cluster1.nodes, cluster2.nodes, graph)
-                text = "numbers of edges " + str(len(edgelist)) + " between cluster[" + str(cluster1.uuid) + "] and cluster[" + str(cluster2.uuid) + "]\n"
-                f.write(text)
-                print(text)
-    f.close()
+                text = text + "numbers of edges " + str(len(edgelist)) + " between cluster[" + str(cluster1.uuid) + "] and cluster[" + str(cluster2.uuid) + "]\n"
+    write2file(text, output_filename)
