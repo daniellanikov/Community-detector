@@ -28,7 +28,7 @@ def ng_finetune_with_modularity(graph, begin, end):
 
 
 def measure(graph):
-    markov_node_groups = markov(graph)
+    markov_node_groups = markov(graph, false, false)
     print("markov nr.:", len(markov_node_groups))
 
     greedy_node_groups = greedy_modularity(graph)

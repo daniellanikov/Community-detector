@@ -36,18 +36,20 @@ def create_graph(edges):
 class Cluster:
     def __init__(self, uuid, node):
         self.uuid = uuid
-        self.nodes = [node]
+        self.nodes = []
+        list(self.nodes).append(node)
 
     def __init__(self, uuid, nodelist):
         self.uuid = uuid
         self.nodes = nodelist
 
     def add_node(self, node):
-        self.nodes.append(node)
+        list(self.nodes).append(node)
 
     def get_nodes(self, uuid):
         if self.uuid == uuid:
             return self.nodes
+
 
 def get_cluster_list(filepath, delimiter):
     file = open(filepath, "r")
