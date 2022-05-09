@@ -81,15 +81,17 @@ def newman(graph=nx.Graph()):
     return node_groups
 
 
-def markov(graph=nx.Graph()):
+def markov(graph=nx.Graph(), print_modularity=bool, draw=bool):
     matrix = nx.to_scipy_sparse_matrix(graph)
     result = mc.run_mcl(matrix)
     clusters = mc.get_clusters(result)
     node_groups = []
     for cluster in clusters:
         node_groups.append(cluster)
-    #print("mc modularity: ", mc.modularity(matrix, clusters))
-    #mc.draw_graph(matrix, clusters, node_size=50, with_labels=False, edge_color="silver")
+    if print_modularity:
+        print("mc modularity: ", mc.modularity(matrix, clusters))
+    if draw:
+        mc.draw_graph(matrix, clusters, node_size=50, with_labels=False, edge_color="silver")
     return node_groups
 
 
@@ -141,7 +143,7 @@ def degree_coloring(graph=nx.Graph()):
     return degrees
 
 
-def h_avoiding_coloring(graph=nx.Graph(), h=nx.Graph()):
+def h_avoiding_coloring(graph=nx.Graph()):
     X, Y = bipartite.sets(graph)
     degrees = degree_coloring(graph)
     colordict = {}
@@ -188,7 +190,7 @@ def h_avoiding_coloring(graph=nx.Graph(), h=nx.Graph()):
 
     #initialize graph position
     pos = dict()
-    pos.update((n, (1, i)) for i, n in enumerate(cluster_1))
+    pos.update((n, (1, i)) for i, n in enumerate(X))
     pos.update((n, (2, i)) for i, n in enumerate(y_sorter(graph)))
 
     #get colormap
